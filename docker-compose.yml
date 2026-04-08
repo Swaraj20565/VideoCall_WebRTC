@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  node-app:
+    build: .
+    container_name: node_app_container
+    ports:
+      - "4000:5000"   # host:container
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
