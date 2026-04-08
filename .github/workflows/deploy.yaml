@@ -1,0 +1,36 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main   # run ONLY on main branch push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./server
+
+      # 4. Run tests (optional)
+      - name: Run tests
+        run: npm test
+        working-directory: ./server
+        continue-on-error: true
+
+      # 5. Build Docker image (just to verify build)
+      - name: Build Docker Image
+        run: docker build -t video-call-app .
